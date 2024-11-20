@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CardContent, CardFooter, CardHeader } from '../ui/card';
-import { Input } from '../ui/Input';
+import { Input } from '../ui/input';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card';
 import { FaInfoCircle } from 'react-icons/fa';
 import { Separator } from '../ui/separator';
