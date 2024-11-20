@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id          String   @id @default(uuid())
+  fullname    String   @db.VarChar(255)
+  username    String   @unique @db.VarChar(255)
+  email       String   @unique @db.VarChar(255)
+  password    String   // Store the hashed password
+  avatar      String
+  coverImage  String?
+  isVerified  Boolean
+  age         Int?
+  verifyCode  String
+  createdAt   DateTime @default(now())
+  role        String   @default("user") 
+  isActive    Boolean  @default(true)
+  verifyCodeExp DateTime
+
+
+  Trade Trade[]
+}
+model Trade {
+  id               String      @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  dateTime         DateTime // Date and time of trade entry
+  exitDateTime     DateTime? // Date and time of trade exit (nullable)
+  hoursHeld        Float    // Time in hours the trade was active
+  stars            Int      // Trade rating (1-5 stars)
+  pair             String   // Currency pair, e.g., "EUR/USD"
+  tradeType        String   // Buy or Sell
+  lotSize          Float    // Lot size
+  entryPrice       Float    // Entry price of the pair
+  takeProfit       Float?   // TP price, nullable
+  stopLoss         Float?   // SL price, nullable
+  tpDollars        Float    // Projected profit if TP hit, in $
+  slDollars        Float    // Projected loss if SL hit, in $
+  actualExit       Float?   // Exit price when trader manually exits before TP/SL hit, nullable
+  actualProfitLoss Float    // Actual P/L in $
+  quickRationale   String?  // Reason for trade entry, nullable
+  comments         String?  // Post-trade comments, nullable
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
