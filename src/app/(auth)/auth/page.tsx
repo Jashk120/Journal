@@ -1,3 +1,4 @@
+```typescript
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +19,15 @@ import { useToast } from '@/hooks/use-toast'; // Adjust the path if necessary
 import axios from 'axios';
 import { signInSchema } from '@/schemas/signInSchema';
 
+/**
+ * Renders the sign-in form component for user authentication.
+ *
+ * This component provides a form for existing users to enter their email and password,
+ * validates the input against the sign-in schema, submits the credentials to the login API,
+ * and handles success or failure with appropriate toast notifications and redirection.
+ *
+ * @returns The JSX element representing the sign-in form page.
+ */
 export default function SignInForm() {
   const router = useRouter();
   const { toast } = useToast();
@@ -30,6 +40,16 @@ export default function SignInForm() {
     },
   });
 
+  /**
+   * Handles form submission for user login.
+   *
+   * Sends a POST request to the login API endpoint with the validated email and password.
+   * On success, displays a success toast and redirects to the dashboard after a short delay.
+   * On failure, displays an error toast with the server's error message or a generic message.
+   *
+   * @param data - The form data containing the user's email and password, validated against the sign-in schema.
+   * @returns A promise that resolves after the request completes and any navigation occurs.
+   */
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     try {
       const response = await axios.post('/api/users/login', {
@@ -106,3 +126,4 @@ export default function SignInForm() {
     </div>
   );
 }
+```
