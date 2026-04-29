@@ -1,3 +1,4 @@
+```typescript
 "use client"
 
 import PositionSizeCard from '@/components/calculatorCards/PositionSizeCard';
@@ -9,7 +10,13 @@ import useCurrencyInfo from '../../../../const/useCurrency';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import MarketDistanceCalculator from '@/components/calculatorCards/MarketDistance';
 
-
+/**
+ * ForexCalculator component provides a UI for performing forex position size calculations.
+ * It allows the user to select a currency pair, set account balance, risk percentage, and stop loss in pips,
+ * and displays the computed position size along with a market distance calculator.
+ *
+ * @returns The rendered forex calculator interface.
+ */
 const ForexCalculator = () => {
   const [accountBalance, setAccountBalance] = useState("");
   const [riskPercentage, setRiskPercentage] = useState("");
@@ -19,6 +26,10 @@ const ForexCalculator = () => {
   const [selectedPair, setSelectedPair] = useState("EUR/USD");
   const [baseCurrency, quoteCurrency] = selectedPair.split("/");
   const fetchedExchangeRate = useCurrencyInfo(baseCurrency, quoteCurrency);
+  
+  /**
+   * Updates the exchange rate state whenever the fetched exchange rate changes.
+   */
   useEffect(() => {
     if (fetchedExchangeRate) {
       setExchangeRate(fetchedExchangeRate);
@@ -75,3 +86,4 @@ const ForexCalculator = () => {
 )}  
 
 export default ForexCalculator;
+```
