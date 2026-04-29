@@ -1,8 +1,16 @@
+```typescript
 "use client";
 import AnalyticsDashboard from '@/components/dashboard/AnalyticsContent';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+/**
+ * App component that serves as the main trading analytics dashboard page.
+ * Fetches analytics data from the server based on a selected time filter and
+ * renders the AnalyticsDashboard component with the fetched data.
+ *
+ * @returns The rendered trading analytics dashboard layout.
+ */
 const App = () => {
   const [analytics, setAnalytics] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -12,6 +20,12 @@ const App = () => {
   const options = ["This Year", "This Week", "This Month"];
 
   useEffect(() => {
+    /**
+     * Fetches analytics data from the server based on the currently selected filter.
+     * Updates the analytics state on success or sets an error message on failure.
+     *
+     * @returns A promise that resolves when the data fetch is complete.
+     */
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -56,3 +70,4 @@ const App = () => {
 };
 
 export default App;
+```
