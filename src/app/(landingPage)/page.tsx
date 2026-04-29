@@ -1,3 +1,4 @@
+```typescript
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -6,8 +7,21 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { useRouter } from 'next/navigation';
 
+/**
+ * Renders the home page of the Forex Trading Journal application.
+ * Displays a welcome message, a carousel of motivational trading tips,
+ * and a call-to-action button to navigate to the trades page.
+ *
+ * @param {void}
+ * @returns {JSX.Element} The home page component.
+ */
 export default function Home() {
  const router = useRouter()
+ /**
+  * Navigates to the trades page when the button is clicked.
+  *
+  * @returns {void}
+  */
  const handleClick = () => {
    router.replace('/trades')
   };
@@ -82,3 +96,4 @@ export default function Home() {
     </>
   );
 }
+```
