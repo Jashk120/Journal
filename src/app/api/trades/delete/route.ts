@@ -1,8 +1,22 @@
+```typescript
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+/**
+ * Handles DELETE requests to delete a trade record.
+ *
+ * Expects a JSON body containing the `tradeId` of the trade to delete.
+ * Validates the presence of the trade ID, checks if the trade exists,
+ * and deletes it from the database.
+ *
+ * @param request - The incoming Next.js request object containing the trade ID.
+ * @returns A NextResponse indicating success (200) or an error message with appropriate status codes:
+ * - 400 if trade ID is missing,
+ * - 404 if the trade is not found,
+ * - 500 if an internal server error occurs.
+ */
 export async function DELETE(request: NextRequest) {
     try {
         const { tradeId } = await request.json();
@@ -39,3 +53,4 @@ export async function DELETE(request: NextRequest) {
         await prisma.$disconnect(); // Ensure Prisma client disconnects
     }
 }
+```

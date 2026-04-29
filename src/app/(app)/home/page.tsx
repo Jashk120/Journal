@@ -1,9 +1,17 @@
+```typescript
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
+/**
+ * Home page component that displays a welcome message and a rotating carousel
+ * of motivational trading messages.
+ *
+ * @returns The JSX element representing the Home page with a welcome section
+ * and an auto-playing carousel of trading tips.
+ */
 export default function Home() {
   const messages = [
     {
@@ -57,3 +65,4 @@ export default function Home() {
     </main>
   );
 }
+```

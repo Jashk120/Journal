@@ -1,5 +1,14 @@
+```typescript
 import { useEffect, useState } from "react";
 
+/**
+ * Custom React hook that fetches and provides the current exchange rate
+ * between two specified currencies using the Open Exchange Rates API.
+ *
+ * @param baseCurrency - The ISO 4217 currency code for the base currency (e.g., "USD").
+ * @param quoteCurrency - The ISO 4217 currency code for the target/quote currency (e.g., "EUR").
+ * @returns The exchange rate from the base currency to the quote currency, or null if not available or an error occurs.
+ */
 function useCurrencyInfo(baseCurrency, quoteCurrency) {
   const [exchangeRate, setExchangeRate] = useState(null);
 
@@ -25,3 +34,4 @@ function useCurrencyInfo(baseCurrency, quoteCurrency) {
 }
 
 export default useCurrencyInfo;
+```

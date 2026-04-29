@@ -1,9 +1,16 @@
+```typescript
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 // Export the GET function
+/**
+ * Handles GET requests to retrieve all trade entries from the database.
+ *
+ * @param req - The incoming HTTP request object.
+ * @returns A NextResponse containing the array of trades with status 200, or an error message with status 500.
+ */
 export async function GET(req: Request) {
     try {
         // Retrieve all trade entries
@@ -21,3 +28,4 @@ export async function GET(req: Request) {
         await prisma.$disconnect(); // Ensure Prisma client disconnects
     }
 }
+```

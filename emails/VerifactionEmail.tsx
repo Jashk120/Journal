@@ -1,3 +1,4 @@
+```typescript
 import {
     Html,
     Head,
@@ -10,11 +11,28 @@ import {
     Button,
   } from '@react-email/components';
   
+  /**
+   * Properties for the VerificationEmail component.
+   *
+   * @interface VerificationEmailProps
+   * @property {string} username - The username of the recipient.
+   * @property {string} otp - The one-time verification code.
+   */
   interface VerificationEmailProps {
     username: string;
     otp: string;
   }
   
+  /**
+   * Renders an email template for user registration verification.
+   * Displays a greeting with the username, a prompt to use the OTP,
+   * and a security notice.
+   *
+   * @param {VerificationEmailProps} props - The component props.
+   * @param {string} props.username - The username of the recipient.
+   * @param {string} props.otp - The one-time verification code.
+   * @returns {JSX.Element} The email template as JSX.
+   */
   export default function VerificationEmail({ username, otp }: VerificationEmailProps) {
     return (
       <Html lang="en" dir="ltr">
@@ -62,3 +80,4 @@ import {
       </Html>
     );
   }
+```

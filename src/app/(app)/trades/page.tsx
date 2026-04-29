@@ -1,3 +1,4 @@
+```typescript
 'use client'
 import React, { useEffect, useState } from 'react';
 import NewEntryDrawer from '@/components/NewEntryDrawer';
@@ -13,6 +14,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+/**
+ * The main dashboard page component for displaying and managing trades.
+ * Provides search, sort, pagination, and a drawer to add new entries.
+ *
+ * @returns The rendered dashboard page.
+ */
 function DashboardPage() {
   const [trades, setTrades] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +30,10 @@ function DashboardPage() {
 
   // Fetch trades from the API with pagination
   useEffect(() => {
+    /**
+     * Fetches trades from the API based on the current page, limit, and sort order.
+     * Updates the trades state and calculates total pages.
+     */
     const fetchTrades = async () => {
       try {
         const response = await fetch(`/api/trades/user-trades?page=${currentPage}&limit=${itemsPerPage}&sortBy=${sortBy}`);
@@ -41,7 +52,12 @@ function DashboardPage() {
     trade.pair.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination navigation
+  /**
+   * Handles pagination navigation by updating the current page.
+   * Ensures the page number stays within the valid range [1, totalPages].
+   *
+   * @param pageNumber - The target page number.
+   */
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
@@ -112,3 +128,4 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
+```

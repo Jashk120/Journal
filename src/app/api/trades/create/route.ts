@@ -1,9 +1,27 @@
+```typescript
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 import { getDataFromToken } from "@/helper/getDataFromTokens";
 
 const prisma = new PrismaClient();
 
+/**
+ * Handles POST request to create a new trade entry for the authenticated user.
+ *
+ * Expects a JSON body containing trade fields such as dateTime, pair, tradeType, entryPrice, lotSize,
+ * and optional fields like exitDateTime, hoursHeld, stars, takeProfit, stopLoss, tpDollars, slDollars,
+ * actualExit, actualProfitLoss, quickRationale, and comments.
+ *
+ * Performs validation on required fields and tradeType, verifies the user exists, then creates the trade
+ * record in the database.
+ *
+ * @param request - The incoming Next.js request object containing trade data in JSON body.
+ * @returns A NextResponse object:
+ *   - On success (201): { success: true, message: 'Trade entry created successfully', trade }
+ *   - On validation failure (400): { success: false, message: 'Missing required fields.' } or similar
+ *   - On user not found (404): { success: false, message: 'User not found.' }
+ *   - On any other error (500): { error: error.message }
+ */
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -105,3 +123,4 @@ export async function POST(request: NextRequest) {
     await prisma.$disconnect();
   }
 }
+```

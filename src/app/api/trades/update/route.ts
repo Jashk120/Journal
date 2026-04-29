@@ -1,8 +1,22 @@
+```typescript
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+/**
+ * Handles PATCH requests to update an existing trade entry.
+ *
+ * Accepts a JSON body containing the trade ID and any subset of updatable fields.
+ * Fetches the current trade, then updates only the fields that were provided,
+ * falling back to existing values for omitted fields.
+ *
+ * @param request - The incoming HTTP request object containing the JSON payload.
+ * @returns A JSON response containing the updated trade object (status 200),
+ *          or an error message (status 400/404/500).
+ *
+ * @throws Will not throw directly; all errors are caught and returned as a 500 response.
+ */
 export async function PATCH(request: NextRequest) {
     try {
         const reqBody = await request.json();
@@ -66,3 +80,4 @@ export async function PATCH(request: NextRequest) {
         await prisma.$disconnect(); // Ensure Prisma client disconnects
     }
 }
+```
