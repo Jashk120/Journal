@@ -1,8 +1,20 @@
+```typescript
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+/**
+ * Handles GET requests to retrieve a single trade by its trade ID.
+ *
+ * @param req - The incoming HTTP request object.
+ * @param params - An object containing route parameters, including the `tradeId` string.
+ * @returns A NextResponse JSON object containing the trade data on success, or an error message with the appropriate HTTP status code.
+ *          Success (200): The trade object.
+ *          Bad Request (400): If `tradeId` is missing or invalid.
+ *          Not Found (404): If no trade with the given ID exists.
+ *          Internal Server Error (500): If an unexpected error occurs.
+ */
 // Export the GET function to retrieve a single trade by tradeId
 export async function GET(req: Request, { params }: { params: { tradeId: string } }) {
     const { tradeId } = params; // Extract tradeId from URL parameters
@@ -34,3 +46,4 @@ export async function GET(req: Request, { params }: { params: { tradeId: string 
         await prisma.$disconnect(); // Ensure Prisma client disconnects
     }
 }
+```
