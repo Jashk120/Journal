@@ -1,36 +1,208 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Forex Trading Journal
 
-## Getting Started
+A Next.js application (App Router) for logging and analyzing forex trades. Built with Prisma, React Hook Form, Zod, Axios, and shadcn/ui components.
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This application provides a complete trading journal system where users can:
+- Sign up and authenticate via email/password with OTP verification
+- Record trades with detailed parameters (pair, entry/exit prices, lot size, stop loss, take profit, etc.)
+- View aggregated analytics (total trades, pairs used, star ratings, average lot size) with time‑range filters
+- Use a forex position size calculator based on account balance, risk percentage, and stop loss
+- Browse motivational trading tips on the app home page
+
+The app uses Next.js App Router with three layout groups: public landing page, authentication pages, and the authenticated app (with sidebar). API routes handle trade CRUD and analytics.
+
+## Features
+
+- **User Authentication** – sign‑in/registration with JWT tokens and OTP email verification
+- **Trade Management** – create, read, update, delete trades; paginated listing of user’s trades
+- **Trade Analytics** – aggregate stats (total trades, pairs, star ratings, avg lot size) filterable by week/month/year/all time
+- **Forex Position Size Calculator** – compute lot size from account balance, risk %, and stop loss pips, using live exchange rates
+- **UI Components** – built with shadcn/ui (sidebar, navbar, cards, carousel) for a consistent look
+- **Email Notifications** – OTP verification emails sent via Resend with React Email templates
+
+## File Structure
+
+```
+├── const/
+│   ├── pairs.ts                 # Currency pairs, commodities, indices, crypto
+│   └── useCurrency.ts           # Hook to fetch live exchange rates
+├── emails/
+│   └── VerificationEmail.tsx    # OTP email template (React Email)
+├── src/
+│   ├── app/
+│   │   ├── (landingPage)/       # Public landing page and layout
+│   │   ├── (auth)/              # Sign‑in / sign‑up pages
+│   │   ├── (app)/               # Authenticated pages (dashboard, home, calculator, trades)
+│   │   └── api/
+│   │       └── trades/          # API routes for trade operations
+│   │           ├── analytics/
+│   │           ├── create/
+│   │           ├── delete/
+│   │           ├── get-trades/
+│   │           ├── one-trade/[tradeId]/
+│   │           ├── update/
+│   │           └── user-trades/
+│   ├── components/              # Reusable UI components (shadcn + app-specific)
+│   └── helper/
+│       └── getDataFromTokens.ts # Extract user ID from JWT
+├── prisma/
+│   └── schema.prisma            # Database schema (inferred)
+└── .env.local                   # Environment variables
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The following examples illustrate how to interact with the main parts of the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Create a Trade (API)
 
-## Learn More
+```typescript
+// POST /api/trades/create
+const newTrade = {
+  pair: "EUR/USD",
+  tradeType: "Buy",
+  lotSize: 0.5,
+  entryPrice: 1.1050,
+  takeProfit: 1.1100,
+  stopLoss: 1.1000,
+  quickRationale: "Bullish breakout on 4H",
+};
 
-To learn more about Next.js, take a look at the following resources:
+const response = await fetch("/api/trades/create", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(newTrade),
+});
+const createdTrade = await response.json();
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Fetch User Trades (API)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```typescript
+// GET /api/trades/user-trades?page=1&limit=10
+const response = await fetch("/api/trades/user-trades?page=1&limit=10");
+const { trades, totalPages } = await response.json();
+```
 
-## Deploy on Vercel
+### 3. Get Trade Analytics (API)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```typescript
+// POST /api/trades/analytics
+const filters = { timeRange: "This Month" };
+const response = await fetch("/api/trades/analytics", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(filters),
+});
+const analytics = await response.json();
+// { totalTrades: 15, pairsUsed: ["EUR/USD", "GBP/JPY"], starRatings: {3:5,4:7,5:3}, avgLotSize: 0.45 }
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 4. Using the PositionSizeCard Component
+
+```tsx
+import { PositionSizeCard } from "@/components/PositionSizeCard";
+
+function CalculatorPage() {
+  return (
+    <div>
+      <h1>Position Size Calculator</h1>
+      <PositionSizeCard
+        accountBalance={5000}
+        riskPercent={2}
+        stopLossPips={20}
+        pair="EUR/USD"
+      />
+    </div>
+  );
+}
+```
+
+### 5. Using the useCurrencyInfo Hook
+
+```tsx
+import { useCurrencyInfo } from "@/const/useCurrency";
+
+function ExchangeRateDisplay() {
+  const { data, loading, error } = useCurrencyInfo("EUR", "USD");
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching rate</p>;
+  return <p>EUR/USD rate: {data}</p>;
+}
+```
+
+### 6. OTP Verification Email (email template usage)
+
+```tsx
+import { VerficationEmail } from "@/emails/VerificationEmail";
+
+// Inside an API route that sends email (e.g., Resend)
+import { Resend } from "resend";
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+await resend.emails.send({
+  from: "noreply@yourdomain.com",
+  to: user.email,
+  subject: "Verify your account",
+  react: <VerficationEmail username={user.name} otp={generatedOtp} />,
+});
+```
+
+## Setup
+
+Follow these steps to run the project locally.
+
+### Prerequisites
+
+- Node.js 18.x or later
+- npm or yarn
+- A database (PostgreSQL or SQLite – Prisma supports both)
+- Accounts for:
+  - [Resend](https://resend.com) (email delivery)
+  - [Open Exchange Rates](https://openexchangerates.org) (live forex rates)
+
+### Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/journal?schema=public"
+# or for SQLite: "file:./dev.db"
+
+JWT_SECRET="your-secret-key-at-least-32-chars"
+
+# Resend (email)
+RESEND_API_KEY="re_..."
+
+# Open Exchange Rates
+OPEN_EXCHANGE_RATES_API_KEY="your-api-key"
+```
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+# or
+yarn install
+
+# Generate Prisma client and apply migrations
+npx prisma generate
+npx prisma db push
+
+# Start the development server
+npm run dev
+```
+
+The app will be available at `http://localhost:3000`.
+
+## Notes
+
+- The authentication flow assumes JWT tokens are stored in cookies or local storage (implementation details not fully shown). Adjust token storage as needed.
+- The `prisma/schema.prisma` is not included in the provided context – run `npx prisma db push` after setting up your `DATABASE_URL` to create the tables (the schema is inferred from the API usage).
+- The landing page and auth pages are separate layout groups; the app pages share a sidebar layout.
+- The `useCurrencyInfo` hook uses the Open Exchange Rates API. Ensure your API key has access to the required endpoints.
+- For production, consider adding rate limiting to API routes and improving token security (e.g., HTTP‑only cookies).
+- The email template (`VerificationEmail.tsx`) uses React Email components; you may need to adjust the styling to match your brand.

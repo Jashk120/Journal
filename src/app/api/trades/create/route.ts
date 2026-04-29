@@ -1,9 +1,22 @@
+```typescript
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 import { getDataFromToken } from "@/helper/getDataFromTokens";
 
 const prisma = new PrismaClient();
 
+/**
+ * Handles POST requests to create a new trade entry for the authenticated user.
+ *
+ * Extracts trade data from the request body, validates required fields,
+ * verifies the user exists, and inserts a new trade record into the database.
+ *
+ * @param request - The incoming Next.js request object containing trade details in JSON format.
+ * @returns A NextResponse object with a success status and the created trade,
+ *          or an error response with an appropriate HTTP status code.
+ *
+ * @throws {Error} If an unexpected error occurs during the process, a 500 response is returned.
+ */
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -105,3 +118,4 @@ export async function POST(request: NextRequest) {
     await prisma.$disconnect();
   }
 }
+```

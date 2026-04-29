@@ -1,9 +1,16 @@
+```typescript
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
+/**
+ * Home page component that displays a welcome message and a carousel of motivational
+ * trading tips. The carousel automatically cycles through messages every 3 seconds.
+ *
+ * @returns The JSX structure for the home page.
+ */
 export default function Home() {
   const messages = [
     {
@@ -57,3 +64,4 @@ export default function Home() {
     </main>
   );
 }
+```

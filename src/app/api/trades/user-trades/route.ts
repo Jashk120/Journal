@@ -1,3 +1,4 @@
+```typescript
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { getDataFromToken } from "@/helper/getDataFromTokens";
@@ -5,6 +6,18 @@ import type { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
+/**
+ * Handles GET requests to retrieve paginated trade records for the authenticated user.
+ *
+ * Parses the request for pagination and sorting parameters, extracts the user ID from the
+ * authentication token, and queries the database for trades belonging to that user. Returns
+ * a JSON response with the trades array and total count, or an error message if something fails.
+ *
+ * @param request - The incoming Next.js request object containing query parameters and authentication token.
+ * @returns A NextResponse JSON object with either the trades and total count (status 200),
+ *          an invalid userId error (status 400), or a server error message (status 500).
+ * @throws Will catch any error during token extraction or database interaction and return a 500 response.
+ */
 export async function GET(request: NextRequest) {
     try {
         const userId = await getDataFromToken(request);
@@ -40,3 +53,4 @@ export async function GET(request: NextRequest) {
         await prisma.$disconnect();
     }
 }
+```

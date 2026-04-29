@@ -1,3 +1,4 @@
+```typescript
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -6,11 +7,26 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { useRouter } from 'next/navigation';
 
+/**
+ * Home is the main landing page component. It displays a welcome message,
+ * a carousel of motivational trading messages with autoplay, and a call-to-action
+ * button to navigate to the trade journal page.
+ *
+ * @returns The landing page JSX structure.
+ */
 export default function Home() {
- const router = useRouter()
- const handleClick = () => {
-   router.replace('/trades')
+  const router = useRouter();
+
+  /**
+   * Navigates the user to the '/trades' page by replacing the current history entry.
+   * This prevents the user from returning to the landing page via the back button.
+   *
+   * @returns void
+   */
+  const handleClick = () => {
+    router.replace('/trades');
   };
+
   const messages = [
     {
       title: "Keep a Detailed Forex Journal",
@@ -76,9 +92,7 @@ export default function Home() {
           </Button>
         </section>
       </main>
-
-    
-    
     </>
   );
 }
+```

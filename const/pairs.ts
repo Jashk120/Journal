@@ -1,3 +1,7 @@
+/**
+ * A list of currency pairs and financial instruments available for trading, grouped by category.
+ * Each entry includes the pair symbol and optionally a human-readable name.
+ */
 // currencyPairs.js
 export const currencyPairs = [
     // Major Forex Pairs
@@ -46,4 +50,7 @@ export const currencyPairs = [
     { pair: "XRP/USD", name: "Ripple" },
   ];
 
+/**
+ * An array of predefined time range options for filtering data, such as in reports or charts.
+ */
 export  const options = ["This Week", "This Month", "This Year", "All Time"];
