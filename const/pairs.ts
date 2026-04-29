@@ -1,3 +1,4 @@
+```typescript
 // currencyPairs.js
 export const currencyPairs = [
     // Major Forex Pairs
@@ -47,3 +48,4 @@ export const currencyPairs = [
   ];
 
 export  const options = ["This Week", "This Month", "This Year", "All Time"];
+```
