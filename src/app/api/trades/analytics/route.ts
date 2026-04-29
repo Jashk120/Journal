@@ -1,9 +1,17 @@
+```typescript
 import { PrismaClient } from '@prisma/client';
 import { getDataFromToken } from '@/helper/getDataFromTokens';
 import { NextRequest, NextResponse } from 'next/server';
 
 
 const prisma = new PrismaClient()
+
+/**
+ * Calculates the start and end dates for a given filter string.
+ *
+ * @param filter - A string representing the time filter (e.g., 'This Week', 'This Month', 'This Year'). Defaults to all-time if unrecognized.
+ * @returns An array containing the start date and end date as Date objects.
+ */
 const getDateRange = (filter: any) => {
     
     const now = new Date();
@@ -19,6 +27,17 @@ const getDateRange = (filter: any) => {
   }
 };
 
+/**
+ * Handles POST requests to fetch trade analytics for the authenticated user.
+ *
+ * Extracts the user ID from the authentication token, applies a time filter from the request body,
+ * retrieves trades within the specified range from the database, and computes statistics including
+ * total trades, pairs used, star rating distribution, and average lot size.
+ *
+ * @param req - The incoming Next.js request object containing the filter in the JSON body.
+ * @returns A NextResponse JSON object with the analytics data on success, or an error message on failure.
+ * @throws {Error} If token extraction fails or database query encounters an error.
+ */
 export async function POST(req: NextRequest) {
   try {
     // Extract user ID from token
@@ -81,3 +100,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+```
