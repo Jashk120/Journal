@@ -1,3 +1,4 @@
+```tsx
 "use client"
 
 import PositionSizeCard from '@/components/calculatorCards/PositionSizeCard';
@@ -9,7 +10,14 @@ import useCurrencyInfo from '../../../../const/useCurrency';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import MarketDistanceCalculator from '@/components/calculatorCards/MarketDistance';
 
-
+/**
+ * ForexCalculator component provides a UI for performing forex calculations
+ * such as position sizing and market distance. It allows users to select a
+ * currency pair, input account balance, risk percentage, stop loss in pips,
+ * and displays the calculated lot size based on the current exchange rate.
+ *
+ * @returns A React element containing the forex calculator interface.
+ */
 const ForexCalculator = () => {
   const [accountBalance, setAccountBalance] = useState("");
   const [riskPercentage, setRiskPercentage] = useState("");
@@ -75,3 +83,4 @@ const ForexCalculator = () => {
 )}  
 
 export default ForexCalculator;
+```
